@@ -1,70 +1,72 @@
-# Getting Started with Create React App
+<!--
+ * @Author: raotaohub
+ * @Date: 2021-02-12 23:51:27
+ * @LastEditTime: 2021-02-13 21:20:36
+ * @LastEditors: raotaohub
+ * @FilePath: \react-music\README.md
+ * @Description: 项目描述和注意事项
+-->
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 一、项目规范
 
-## Available Scripts
+在介绍项目功能之前，我有必要强调一个这个项目工程的开发规范和我个人的编码风格，提前告知一下，我这么做也是有自己充分的理由的，让项目可读性和可维护性尽可能高，希望后面看到一些 "奇葩" 的操作不要感到奇怪。
 
-In the project directory, you can run:
+1、class 组件不再用，全面拥抱 hooks ，统一用函数组件。
 
-### `yarn start`
+2、组件内部状态用 hooks 处理，凡是业务数据全部放在 redux 中管理。
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+3、 ajax 请求以及后续数据处理的具体代码全部放在 actionCreator 中，由 redux-thunk 进行处理，尽可能精简组件代码。
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+4、每一个容器组件都有自己独立的 reducer，然后再全局的 store 下通过 redux 的 combineReducer 方法合并。
 
-### `yarn test`
+5、JS 变量名 (包括函数名) 采用小驼峰的方式，组件名或者 styled-components 导出的样式容器名都采用大驼峰，常量名所有字母大写。
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+6、普通 CSS 类名全部用英语小写，单词间用下划线连接，CSS 动画钩子类名中单词用 - 连接。
 
-### `yarn build`
+7、凡是 props 中有数据的，全部在组件最前面提前解构赋值，并且，获得的属性名和方法名要分开声明，从父组件获得的 props 和通过 react-redux 中映射获得的 props 也要分开声明。
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+8、useEffect 统一写在最前面，并且紧跟着 props 解构赋值代码后面。
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+9、凡是负责返回 JSX 的函数，统一聚集在函数最后面，中间不要穿插事件处理函数和其他逻辑。
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+10、mapDispatchToProps 返回的函数中，函数名格式为 xxxDispatch，以免和现有 action 名冲突。
 
-### `yarn eject`
+11、每个组件都应用 memo 包裹，使得 React 在更新组件之前进行 props 的比对，若 props 不变则不对组件更新，减少不必要的重渲染。
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 二、组件优化使用 React.memo()优化
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Component 的 2 个问题
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+1. 只要执行 setState(),即使不改变状态数据, 组件也会重新 render() ==> 效率低
+2. 只当前组件重新 render(), 就会自动重新 render 子组件，纵使子组件没有用到父组件的任何数据 ==> 效率低
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+解决方式 1：重写 shouldComponentUpdate()方法
+解决方式 2：使用 PureComponent
+本项目采用方案：React.memo()是一个高阶函数，它与 React.PureComponent 类似，但是一个函数组件而非一个类。
 
-## Learn More
+## 三、封装 scroll 组件和 forwardRef 的使用
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- scroll 的参数
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```js
+Scroll.propTypes = {
+  direction: PropTypes.oneOf(["vertical", "horizental"]), // 滚动的方向
+  click: true, // 是否支持点击
+  refresh: PropTypes.bool, // 是否刷新
+  onScroll: PropTypes.func, // 滑动触发的回调函数
+  pullUp: PropTypes.func, // 上拉加载逻辑
+  pullDown: PropTypes.func, // 下拉加载逻辑
+  pullUpLoading: PropTypes.bool, // 是否显示上拉 loading 动画
+  pullDownLoading: PropTypes.bool, // 是否显示下拉 loading 动画
+  bounceTop: PropTypes.bool, // 是否支持向上吸顶
+  bounceBottom: PropTypes.bool, // 是否支持向下吸底
+};
+```
 
-### Code Splitting
+- forwardRef 的使用
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```js
+const Scroll = forwardRef((props, ref) => {
+  // 编写组件内容
+});
+```
