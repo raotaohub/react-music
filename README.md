@@ -1,7 +1,7 @@
 <!--
  * @Author: raotaohub
  * @Date: 2021-02-12 23:51:27
- * @LastEditTime: 2021-02-13 21:20:36
+ * @LastEditTime: 2021-02-15 20:36:39
  * @LastEditors: raotaohub
  * @FilePath: \react-music\README.md
  * @Description: 项目描述和注意事项
@@ -41,8 +41,10 @@
 2. 只当前组件重新 render(), 就会自动重新 render 子组件，纵使子组件没有用到父组件的任何数据 ==> 效率低
 
 解决方式 1：重写 shouldComponentUpdate()方法
+
 解决方式 2：使用 PureComponent
-本项目采用方案：React.memo()是一个高阶函数，它与 React.PureComponent 类似，但是一个函数组件而非一个类。
+
+解决方式 3：本项目采用方案--React.memo()是一个高阶函数，它与 React.PureComponent 类似，但是一个函数组件而非一个类。
 
 ## 三、封装 scroll 组件和 forwardRef 的使用
 
@@ -70,3 +72,27 @@ const Scroll = forwardRef((props, ref) => {
   // 编写组件内容
 });
 ```
+
+## 懒加载 react-lazyload
+
+- 采取一个成熟的方案 react-lazyload 库 `yarn add react-lazyload`
+
+1. 图片懒加载
+   `\react-music\src\components\list\index.js` <LazyLoad ..>...</LazyLoad>
+2. 组件懒加载
+   暂时未实施
+
+## Redux 数据缓存
+
+在`\react-music\src\application\Recommend\index.js` useEffect()调用中加 1 个判断当前数据量的逻辑
+
+## Hooks
+
+1. useMemo？？？？？？？？？？？？？？`有待深入考究`
+
+## redux 命名规范
+
+action type 规范
+
+- MODULE*PAGE_ACTION_OTHER
+  模块名*页面名*操作名*其他
