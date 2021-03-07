@@ -1,19 +1,19 @@
 /*
  * @Author: raotaohub
  * @Date: 2021-02-13 00:42:05
- * @LastEditTime: 2021-02-15 19:34:55
+ * @LastEditTime: 2021-03-06 11:15:46
  * @LastEditors: raotaohub
  * @FilePath: \react-music\src\application\Singers\index.js
  * @Description: Edit......
  */
-import React, { useState, useEffect } from "react";
-import LazyLoad, { forceCheck } from "react-lazyload";
-import { connect } from "react-redux";
-import Horizen from "../../baseUI/horizen-item";
-import Scroll from "../../baseUI/scroll";
-import Loading from "../../baseUI/loading";
-import { categoryTypes, alphaTypes } from "../../api/config";
-import { NavContainer, ListContainer, List, ListItem } from "./style";
+import React, { useState, useEffect, useContext } from 'react';
+import LazyLoad, { forceCheck } from 'react-lazyload';
+import { connect } from 'react-redux';
+import Horizen from '../../baseUI/horizen-item';
+import Scroll from '../../baseUI/scroll';
+import Loading from '../../baseUI/loading';
+import { categoryTypes, alphaTypes } from '../../api/config';
+import { NavContainer, ListContainer, List, ListItem } from './style';
 import {
   getSingerList,
   getHotSingerList,
@@ -23,11 +23,17 @@ import {
   changePullUpLoading,
   changePullDownLoading,
   reMoreHotSingerList,
-} from "./store/actionCreators";
+} from './store/actionCreators';
+
+// 引入 Context上下文状态对象
+import { CategoryDataContext, CHANGE_CATEGORY, CHANGE_ALPHA } from './data';
 
 function Singers(props) {
-  let [category, setCategory] = useState("");
-  let [alpha, setAlpha] = useState("");
+  // let [category, setCategory] = useState('');
+  // let [alpha, setAlpha] = useState('');
+
+  const { data, dispatch } = useContext(CategoryDataContext);
+  const { category, alpha } = data.toJS();
 
   const {
     singerList,
@@ -50,18 +56,20 @@ function Singers(props) {
     // eslint-disable-next-line
   }, []);
 
-  const handleUpdateCategory = (val) => {
-    setCategory(val);
+  const handleUpdateCategory = val => {
+    // setCategory(val);
+    dispatch({ type: CHANGE_CATEGORY, data: val });
     updateSingerDispatch(val, alpha);
   };
 
-  const handleUpdateAlpha = (val) => {
-    setAlpha(val);
+  const handleUpdateAlpha = val => {
+    // setAlpha(val);
+    dispatch({ type: CHANGE_ALPHA, data: val });
     updateSingerDispatch(category, val);
   };
 
   const handlePullUp = () => {
-    pullUpReDispatch(category, alpha, category === "", pageCount);
+    pullUpReDispatch(category, alpha, category === '', pageCount);
   };
 
   const handlePullDown = () => {
@@ -74,14 +82,14 @@ function Singers(props) {
       <List>
         {list.map((item, index) => {
           return (
-            <ListItem key={item.accountId + "" + index}>
+            <ListItem key={item.accountId + '' + index}>
               <div className="img_wrapper">
                 <LazyLoad
                   placeholder={
                     <img
                       width="100%"
                       height="100%"
-                      src={require("./zune.png")}
+                      src={require('./zune.png')}
                       alt="music"
                     />
                   }
@@ -107,15 +115,15 @@ function Singers(props) {
       <NavContainer>
         <Horizen
           list={categoryTypes}
-          title={"分类（默认热门）:"}
+          title={'分类（默认热门）:'}
           oldVal={category}
-          handleClick={(val) => handleUpdateCategory(val)}
+          handleClick={val => handleUpdateCategory(val)}
         ></Horizen>
         <Horizen
           list={alphaTypes}
-          title={"首字母："}
+          title={'首字母：'}
           oldVal={alpha}
-          handleClick={(val) => handleUpdateAlpha(val)}
+          handleClick={val => handleUpdateAlpha(val)}
         ></Horizen>
       </NavContainer>
       <ListContainer>
@@ -135,14 +143,14 @@ function Singers(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  singerList: state.getIn(["singers", "singerList"]),
-  pageCount: state.getIn(["singers", "pageCount"]),
-  enterLoading: state.getIn(["singers", "enterLoading"]),
-  pullUpLoading: state.getIn(["singers", "pullUpLoading"]),
-  pullDownLoading: state.getIn(["singers", "pullDownLoading"]),
+const mapStateToProps = state => ({
+  singerList: state.getIn(['singers', 'singerList']),
+  pageCount: state.getIn(['singers', 'pageCount']),
+  enterLoading: state.getIn(['singers', 'enterLoading']),
+  pullUpLoading: state.getIn(['singers', 'pullUpLoading']),
+  pullDownLoading: state.getIn(['singers', 'pullDownLoading']),
 });
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     // 首次获取热门歌手
     getHotSingerDispatch() {
@@ -150,7 +158,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     // 按照类目更新歌手列表
     updateSingerDispatch(category, alpha) {
-      console.log("@@点击筛选");
+      console.log('@@点击筛选');
       dispatch(changePageCount(0));
       dispatch(changeEnterLoading(true));
       dispatch(getSingerList(category, alpha));
@@ -169,7 +177,7 @@ const mapDispatchToProps = (dispatch) => {
     pullDownReDispatch(category, alpha) {
       dispatch(changePullDownLoading(true));
       dispatch(changePageCount(0));
-      if (category === "" && alpha === "") {
+      if (category === '' && alpha === '') {
         dispatch(getHotSingerList());
       } else {
         dispatch(changeEnterLoading(true));

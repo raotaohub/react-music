@@ -1,24 +1,24 @@
 /*
  * @Author: raotaohub
  * @Date: 2021-02-13 21:08:06
- * @LastEditTime: 2021-02-15 20:13:57
+ * @LastEditTime: 2021-03-07 17:29:35
  * @LastEditors: raotaohub
  * @FilePath: \react-music\src\api\request.js
  * @Description: 封装请求方法
  */
 
-import { axiosInstance } from "./config";
+import { axiosInstance } from './config';
 
 export const getBannerRequest = () => {
-  return axiosInstance.get("/banner");
+  return axiosInstance.get('/banner');
 };
 
 export const getRecommendListRequest = () => {
-  return axiosInstance.get("/personalized");
+  return axiosInstance.get('/personalized');
 };
 
 // https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e7%83%ad%e9%97%a8%e6%ad%8c%e6%89%8b
-export const getHotSingerListRequest = (count) => {
+export const getHotSingerListRequest = count => {
   return axiosInstance.get(`/top/artists?offset=${count}`);
 };
 
@@ -36,5 +36,10 @@ export const getSingerListRequest = (category, alpha, count) => {
 };
 
 export const getRankTopListRequest = () => {
-  return axiosInstance.get("/toplist/detail");
+  return axiosInstance.get('/toplist/detail');
+};
+
+// 请求推荐页专辑歌单
+export const getAlbumDetailRequest = id => {
+  return axiosInstance.get(`/playlist/detail?id=${id}`);
 };

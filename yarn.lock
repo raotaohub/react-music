@@ -1089,6 +1089,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
+  version "7.13.9"
+  resolved "https://registry.npm.taobao.org/@babel/runtime/download/@babel/runtime-7.13.9.tgz#97dbe2116e2630c489f22e0656decd60aaa1fcee"
+  integrity sha1-l9viEW4mMMSJ8i4GVt7NYKqh/O4=
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.12.13", "@babel/template@^7.4.0", "@babel/template@^7.4.4", "@babel/template@^7.8.6":
   version "7.12.13"
   resolved "https://registry.npm.taobao.org/@babel/template/download/@babel/template-7.12.13.tgz?cache=0&sync_timestamp=1612314730561&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Ftemplate%2Fdownload%2F%40babel%2Ftemplate-7.12.13.tgz#530265be8a2589dbb37523844c5bcb55947fb327"
@@ -3658,6 +3665,11 @@ cssstyle@^1.0.0, cssstyle@^1.1.1:
   dependencies:
     cssom "0.3.x"
 
+csstype@^3.0.2:
+  version "3.0.7"
+  resolved "https://registry.npm.taobao.org/csstype/download/csstype-3.0.7.tgz#2a5fb75e1015e84dd15692f71e89a1450290950b"
+  integrity sha1-Kl+3XhAV6E3RVpL3HomhRQKQlQs=
+
 cyclist@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/cyclist/download/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
@@ -3924,6 +3936,14 @@ dom-converter@^0.2:
   integrity sha1-ZyGp2u4uKTaClVtq/kFncWJ7t2g=
   dependencies:
     utila "~0.4"
+
+dom-helpers@^5.0.1:
+  version "5.2.0"
+  resolved "https://registry.npm.taobao.org/dom-helpers/download/dom-helpers-5.2.0.tgz#57fd054c5f8f34c52a3eeffdb7e7e93cd357d95b"
+  integrity sha1-V/0FTF+PNMUqPu/9t+fpPNNX2Vs=
+  dependencies:
+    "@babel/runtime" "^7.8.7"
+    csstype "^3.0.2"
 
 dom-serializer@0:
   version "0.2.2"
@@ -8907,6 +8927,16 @@ react-scripts@3.1.1:
     workbox-webpack-plugin "4.3.1"
   optionalDependencies:
     fsevents "2.0.7"
+
+react-transition-group@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.npm.taobao.org/react-transition-group/download/react-transition-group-4.4.1.tgz#63868f9325a38ea5ee9535d828327f85773345c9"
+  integrity sha1-Y4aPkyWjjqXulTXYKDJ/hXczRck=
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    dom-helpers "^5.0.1"
+    loose-envify "^1.4.0"
+    prop-types "^15.6.2"
 
 react@^16.9.0:
   version "16.14.0"

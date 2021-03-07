@@ -96,3 +96,32 @@ action type 规范
 
 - MODULE*PAGE_ACTION_OTHER
   模块名*页面名*操作名*其他
+
+## 动画实现
+
+> $ npm install react-transition-group --save
+
+一个成熟的react过渡动画库
+
+实现点击跳转的一个动画效果
+
+```css
+  transform-origin: right bottom;
+  &.fly-enter, &.fly-appear {
+    transform: rotateZ (30deg) translate3d (100%, 0, 0);⭐
+  }
+  &.fly-enter-active, &.fly-appear-active {
+    transition: transform .3s;
+    transform: rotateZ (0deg) translate3d (0, 0, 0);⭐
+  }
+  &.fly-exit {
+    transform: rotateZ (0deg) translate3d (0, 0, 0);⭐
+  }
+  &.fly-exit-active {
+    transition: transform .3s;
+    transform: rotateZ (30deg) translate3d (100%, 0, 0); ⭐
+  }
+设定 transfrom 的固定点，接下来的动画都是绕这个点旋转或平移
+设置 rotateZ 的值，让整个页面能够拥有 Z 坐标方向的矢量
+```
+

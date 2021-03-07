@@ -1,5 +1,7 @@
 {
   "recommendations": [
-    "jpoissonnier.vscode-styled-components"
+    "jpoissonnier.vscode-styled-components",
+    "dsznajder.es7-react-js-snippets",
+    "ms-ceintl.vscode-language-pack-zh-hans"
   ]
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: raotaohub
  * @Date: 2021-02-13 15:03:32
- * @LastEditTime: 2021-02-14 23:32:26
+ * @LastEditTime: 2021-02-19 23:28:21
  * @LastEditors: raotaohub
  * @FilePath: \react-music\src\store\index.js
  * @Description: Edit......
@@ -12,6 +12,7 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk"; // 异步中间件
 import reducer from "./reducer"; // 合并后的reducer
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));

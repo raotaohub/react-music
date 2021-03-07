@@ -1,19 +1,19 @@
 /*
  * @Author: raotaohub
  * @Date: 2021-02-13 00:42:05
- * @LastEditTime: 2021-02-15 23:15:30
+ * @LastEditTime: 2021-03-07 20:38:12
  * @LastEditors: raotaohub
  * @FilePath: \react-music\src\application\Rank\index.js
  * @Description: Edit......
  */
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { getRankList } from "./store/index";
-import { filterIndex, filterIdx } from "../../api/utils";
-import Scroll from "../../baseUI/scroll/index";
-import Loading from "../../baseUI/loading";
-import { Container, List, ListItem, SongList } from "./style";
-import { renderRoutes } from "react-router-config";
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { getRankList } from './store/index';
+import { filterIndex } from '../../api/utils';
+import Scroll from '../../baseUI/scroll/index';
+import Loading from '../../baseUI/loading';
+import { Container, List, ListItem, SongList } from './style';
+import { renderRoutes } from 'react-router-config';
 
 function Rank(props) {
   const { rankList: list, loading } = props;
@@ -27,7 +27,7 @@ function Rank(props) {
     [getRankListDispatch]
   );
 
-  let rankList = list ? list.toJS() : [];
+  let rankList = list.toJS();
 
   let globalStartIndex = filterIndex(rankList);
 
@@ -35,23 +35,19 @@ function Rank(props) {
 
   let globalList = rankList.slice(globalStartIndex);
 
-  const enterDetail = (name) => {
-    const idx = filterIdx(name);
-    if (idx === null) {
-      alert("暂无相关数据");
-      return;
-    }
+  const enterDetail = item => {
+    props.history.push(`/rank/${item.id}`);
   };
 
   const renderRankList = (list, global) => {
     return (
       <List globalRank={global}>
-        {list.map((item) => {
+        {list.map(item => {
           return (
             <ListItem
-              key={item.coverImgId}
+              key={item.id}
               tracks={item.tracks}
-              onClick={() => enterDetail(item.name)}
+              onClick={() => enterDetail(item)}
             >
               <div className="img_wrapper">
                 <img src={item.coverImgUrl} alt="" />
@@ -66,7 +62,7 @@ function Rank(props) {
     );
   };
 
-  const renderSongList = (list) => {
+  const renderSongList = list => {
     return list.length ? (
       <SongList>
         {list.map((item, index) => {
@@ -81,7 +77,7 @@ function Rank(props) {
   };
 
   // 榜单数据未加载出来之前都给隐藏
-  let displayStyle = loading ? { display: "none" } : { display: "" };
+  let displayStyle = loading ? { display: 'none' } : { display: '' };
 
   return (
     <Container>
@@ -104,12 +100,12 @@ function Rank(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  rankList: state.getIn(["rank", "rankList"]),
-  loading: state.getIn(["rank", "loading"]),
+const mapStateToProps = state => ({
+  rankList: state.getIn(['rank', 'rankList']),
+  loading: state.getIn(['rank', 'loading']),
 });
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     getRankListDispatch() {
       dispatch(getRankList());
