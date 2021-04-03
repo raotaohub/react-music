@@ -6,14 +6,22 @@
  * @FilePath: \react-music\src\application\Singers\index.js
  * @Description: Edit......
  */
-import React, { useState, useEffect, useContext } from 'react';
-import LazyLoad, { forceCheck } from 'react-lazyload';
-import { connect } from 'react-redux';
+// ---------------------- 引入库     ----------------------
+import React, {useState, useEffect, useContext} from 'react';
+import LazyLoad, {forceCheck} from 'react-lazyload';
+import {connect} from 'react-redux';
+import {renderRoutes} from "react-router-config";
+
+// ---------------------- 引入UI组件     ----------------------
 import Horizen from '../../baseUI/horizen-item';
 import Scroll from '../../baseUI/scroll';
 import Loading from '../../baseUI/loading';
-import { categoryTypes, alphaTypes } from '../../api/config';
-import { NavContainer, ListContainer, List, ListItem } from './style';
+import {NavContainer, ListContainer, List, ListItem} from './style';
+
+// ---------------------- 引入自定义工具     --------------------
+import {categoryTypes, alphaTypes} from '../../api/config';
+
+// ---------------------- 引入action ----------------------
 import {
   getSingerList,
   getHotSingerList,
@@ -26,14 +34,14 @@ import {
 } from './store/actionCreators';
 
 // 引入 Context上下文状态对象
-import { CategoryDataContext, CHANGE_CATEGORY, CHANGE_ALPHA } from './data';
+import {CategoryDataContext, CHANGE_CATEGORY, CHANGE_ALPHA} from './data';
 
 function Singers(props) {
   // let [category, setCategory] = useState('');
   // let [alpha, setAlpha] = useState('');
 
-  const { data, dispatch } = useContext(CategoryDataContext);
-  const { category, alpha } = data.toJS();
+  const {data, dispatch} = useContext(CategoryDataContext);
+  const {category, alpha} = data.toJS();
 
   const {
     singerList,
@@ -58,13 +66,13 @@ function Singers(props) {
 
   const handleUpdateCategory = val => {
     // setCategory(val);
-    dispatch({ type: CHANGE_CATEGORY, data: val });
+    dispatch({type: CHANGE_CATEGORY, data: val});
     updateSingerDispatch(val, alpha);
   };
 
   const handleUpdateAlpha = val => {
     // setAlpha(val);
-    dispatch({ type: CHANGE_ALPHA, data: val });
+    dispatch({type: CHANGE_ALPHA, data: val});
     updateSingerDispatch(category, val);
   };
 
@@ -76,70 +84,75 @@ function Singers(props) {
     pullDownReDispatch(category, alpha);
   };
 
+  const enterDetail = (id) => {
+    props.history.push(`/singers/${id}`)
+  }
+
   const renderSingerList = () => {
     const list = singerList ? singerList.toJS() : [];
     return (
-      <List>
-        {list.map((item, index) => {
-          return (
-            <ListItem key={item.accountId + '' + index}>
-              <div className="img_wrapper">
-                <LazyLoad
-                  placeholder={
-                    <img
-                      width="100%"
-                      height="100%"
-                      src={require('./zune.png')}
-                      alt="music"
-                    />
-                  }
-                >
-                  <img
-                    src={`${item.picUrl}?param=300x300`}
-                    width="100%"
-                    height="100%"
-                    alt="music"
-                  />
-                </LazyLoad>
-              </div>
-              <span className="name">{item.name}</span>
-            </ListItem>
-          );
-        })}
-      </List>
+        <List>
+          {list.map((item, index) => {
+            return (
+                <ListItem key={item.accountId + '' + index} onClick={() => enterDetail(item.id)}>
+                  <div className="img_wrapper">
+                    <LazyLoad
+                        placeholder={
+                          <img
+                              width="100%"
+                              height="100%"
+                              src={require('./zune.png')}
+                              alt="music"
+                          />
+                        }
+                    >
+                      <img
+                          src={`${item.picUrl}?param=300x300`}
+                          width="100%"
+                          height="100%"
+                          alt="music"
+                      />
+                    </LazyLoad>
+                  </div>
+                  <span className="name">{item.name}</span>
+                </ListItem>
+            );
+          })}
+          {renderRoutes(props.route.routes)}
+        </List>
     );
   };
 
   return (
-    <div>
-      <NavContainer>
-        <Horizen
-          list={categoryTypes}
-          title={'分类（默认热门）:'}
-          oldVal={category}
-          handleClick={val => handleUpdateCategory(val)}
-        ></Horizen>
-        <Horizen
-          list={alphaTypes}
-          title={'首字母：'}
-          oldVal={alpha}
-          handleClick={val => handleUpdateAlpha(val)}
-        ></Horizen>
-      </NavContainer>
-      <ListContainer>
-        <Scroll
-          pullUp={handlePullUp}
-          pullDown={handlePullDown}
-          pullUpLoading={pullUpLoading}
-          pullDownLoading={pullDownLoading}
-          onScroll={forceCheck}
-        >
-          {renderSingerList()}
-        </Scroll>
-        <Loading show={enterLoading}></Loading>
-      </ListContainer>
-      {<Loading />}
-    </div>
+      <div>
+        <NavContainer>
+          <Horizen
+              list={categoryTypes}
+              title={'分类（默认热门）:'}
+              oldVal={category}
+              handleClick={val => handleUpdateCategory(val)}
+          ></Horizen>
+          <Horizen
+              list={alphaTypes}
+              title={'首字母：'}
+              oldVal={alpha}
+              handleClick={val => handleUpdateAlpha(val)}
+          ></Horizen>
+        </NavContainer>
+        <ListContainer>
+          <Scroll
+              pullUp={handlePullUp}
+              pullDown={handlePullDown}
+              pullUpLoading={pullUpLoading}
+              pullDownLoading={pullDownLoading}
+              onScroll={forceCheck}
+          >
+            {renderSingerList()}
+          </Scroll>
+          <Loading show={enterLoading}></Loading>
+        </ListContainer>
+        {<Loading/>}
+      </div>
   );
 }
 
@@ -188,6 +201,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(React.memo(Singers));
